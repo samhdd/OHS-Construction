@@ -25,4 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
             header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
         }
     });
+
+    // Hero Slider
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+    const slideInterval = 5000; // 5 seconds
+
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    if (slides.length > 0) {
+        setInterval(nextSlide, slideInterval);
+    }
 });

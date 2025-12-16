@@ -173,15 +173,71 @@ header {
 
 /* Hero Section */
 .hero {
-    height: 70vh;
-    min-height: 500px;
-    background: linear-gradient(rgba(0, 43, 91, 0.8), rgba(0, 43, 91, 0.7)), url('../images/penetrante_tizi/IMG-20250730-WA0006.jpg') center/cover no-repeat;
+    height: 90vh;
+    /* Increased height for better impact */
+    min-height: 600px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--text-white);
     padding-top: 80px;
+    overflow: hidden;
+}
+
+.hero-slides {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    /* Smooth transition */
+}
+
+.hero-slide.active {
+    opacity: 1;
+    animation: zoomEffect 20s infinite alternate;
+    /* Subtle zoom effect */
+}
+
+@keyframes zoomEffect {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 43, 91, 0.7), rgba(0, 43, 91, 0.5));
+    /* Balanced transparency */
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
 }
 
 .hero-content h1 {

@@ -1,0 +1,31 @@
+# Development files
+*.txt
+a propos de nous.txt
+qui somme nous.txt
+projets.txt
+service.txt
+
+# Project source folders (not for deployment)
+projet*/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

@@ -1,46 +1,39 @@
-# CI/CD Pipeline: GitHub Actions → cPanel (SSH Deployment)
+# CI/CD Pipeline: GitHub Actions to cPanel (FTP Deployment)
 
-Documentation du pipeline **CI/CD automatisé** pour le déploiement du site web **OHS CONSTRUCTION** vers un serveur **cPanel** via **GitHub Actions et SSH**.
-
-Ce document est opérationnel et concis. Pas de théorie, uniquement ce dont vous avez besoin pour configurer et exécuter le pipeline.
+Documentation for the **automated CI/CD pipeline** deploying the **OHS CONSTRUCTION** website to a **cPanel** server via **FTP**.
 
 ---
 
-## 📋 Table des Matières
+## Table of Contents
 
 1. [Architecture](#1-architecture-diagram)
-2. [Structure du Repository](#2-repository-structure)
-3. [Prérequis](#3-prerequisites)
-4. [Configuration SSH](#4-ssh-key-setup)
-5. [Secrets GitHub](#5-github-secrets-configuration)
-6. [Workflow GitHub Actions](#6-github-actions-workflow)
-7. [Flux de Déploiement](#7-deployment-steps-operational-flow)
-8. [Résultat](#8-result)
-9. [Dépannage](#9-troubleshooting)
-10. [Notes Importantes](#10-notes)
+2. [Repository Structure](#2-repository-structure)
+3. [Prerequisites](#3-prerequisites)
+4. [GitHub Secrets](#4-github-secrets-configuration)
+5. [GitHub Actions Workflow](#5-github-actions-workflow)
+6. [Deployment Operations](#6-deployment-steps-operational-flow)
+7. [Troubleshooting](#7-troubleshooting)
 
 ---
 
 ## 1. Architecture Diagram
 
 ```text
-Développeur (Local)
+Developer (Local)
   │
   │ git push (main)
   ▼
 GitHub Repository
   │
-  │ déclenche le workflow
+  │ triggers workflow
   ▼
 GitHub Actions Runner
   │
-  ├─ Checkout du code
-  ├─ Validation (optionnel)
-  └─ Déploiement via SSH (rsync)
+  ├─ Checkout code
+  └─ Deploy via FTP (SamKirkland Action)
   ▼
-Serveur cPanel
+cPanel Server
   └─ /home/USERNAME/public_html
-      └─ Site web OHS CONSTRUCTION en production
 ```
 
 ---
@@ -51,355 +44,130 @@ Serveur cPanel
 ohs-construction/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # Workflow de déploiement
+│       └── deploy.yml          # FTP Deployment Workflow
 ├── assets/
 │   ├── css/
 │   ├── js/
 │   └── images/
-├── *.html                      # Pages du site
-├── README.md                   # Documentation principale
-└── CI-CD.md                    # Ce fichier
+├── *.html                      # Website Pages
+├── README.md                   # Main Documentation
+└── CI-CD.md                    # This File
 ```
 
-**Important:** Tous les fichiers à la racine et dans `assets/` seront déployés.
+**Important:** All files in the root and `assets/` directories will be deployed, excluding documentation and configuration files.
 
 ---
 
 ## 3. Prerequisites
 
-### ✅ Serveur cPanel
+### cPanel Server
 
-- [x] Accès SSH activé (via cPanel → SSH Access)
-- [x] Nom d'utilisateur cPanel connu
-- [x] Répertoire web racine:
-  ```text
-  /home/USERNAME/public_html
-  ```
-- [x] Port SSH (généralement 22 ou 2222)
+- Valid FTP Account (Username and Password)
+- FTP Server Address (e.g., `ftp.your-domain.com` or IP address)
+- Target Directory (usually `/public_html/`)
 
-**Vérifier l'accès SSH:**
-```bash
-ssh USERNAME@votre-domaine.com -p 22
-```
+### GitHub
 
-### ✅ Machine Locale
-
-- [x] Git installé
-- [x] Client SSH (OpenSSH)
-- [x] Accès au repository GitHub
-
-### ✅ GitHub
-
-- [x] Repository créé (public ou privé)
-- [x] Accès aux paramètres du repository
-- [x] Permissions pour ajouter des secrets
+- Created Repository
+- Access to Repository Secrets
 
 ---
 
-## 4. SSH Key Setup
+## 4. GitHub Secrets Configuration
 
-### Étape 1: Générer une clé de déploiement
+The following secrets must be configured in `Repository -> Settings -> Secrets and variables -> Actions`:
 
-Sur votre machine locale:
-
-```bash
-ssh-keygen -t ed25519 -C "github-actions-ohs-construction" -f ~/.ssh/github_deploy_ohs
-```
-
-**Ne pas** définir de passphrase (appuyez sur Entrée).
-
-Vous obtiendrez:
-- **Clé privée:** `~/.ssh/github_deploy_ohs`
-- **Clé publique:** `~/.ssh/github_deploy_ohs.pub`
-
-### Étape 2: Installer la clé publique sur le serveur
-
-1. **Afficher la clé publique:**
-   ```bash
-   cat ~/.ssh/github_deploy_ohs.pub
-   ```
-
-2. **Se connecter au serveur cPanel via SSH:**
-   ```bash
-   ssh USERNAME@votre-domaine.com
-   ```
-
-3. **Ajouter la clé publique:**
-   ```bash
-   mkdir -p ~/.ssh
-   chmod 700 ~/.ssh
-   echo "VOTRE_CLE_PUBLIQUE" >> ~/.ssh/authorized_keys
-   chmod 600 ~/.ssh/authorized_keys
-   ```
-
-4. **Tester la connexion:**
-   ```bash
-   ssh -i ~/.ssh/github_deploy_ohs USERNAME@votre-domaine.com
-   ```
-
-### Étape 3: Récupérer la clé privée
-
-```bash
-cat ~/.ssh/github_deploy_ohs
-```
-
-**Copiez tout le contenu** (y compris `-----BEGIN OPENSSH PRIVATE KEY-----` et `-----END OPENSSH PRIVATE KEY-----`)
+| Secret Name | Description | Example |
+|-------------|-------------|---------|
+| `FTP_SERVER` | FTP Server Address | `ftp.ohs-construction.com` |
+| `FTP_USERNAME` | FTP Username | `user@ohs-construction.com` |
+| `FTP_PASSWORD` | FTP Password | `******` |
 
 ---
 
-## 5. GitHub Secrets Configuration
+## 5. GitHub Actions Workflow
 
-### Ajouter les secrets
-
-Allez dans:
-```
-Repository → Settings → Secrets and variables → Actions → New repository secret
-```
-
-Créez les secrets suivants:
-
-| Nom Secret        | Valeur                                    | Exemple                          |
-|-------------------|-------------------------------------------|----------------------------------|
-| `SSH_PRIVATE_KEY` | Contenu complet de la clé privée          | `-----BEGIN OPENSSH...`          |
-| `SSH_USER`        | Nom d'utilisateur cPanel                  | `ohsconst`                       |
-| `SSH_HOST`        | Domaine ou IP du serveur                  | `ohs-construction.com`           |
-| `SSH_PORT`        | Port SSH (généralement 22)                | `22`                             |
-| `DEPLOY_PATH`     | Chemin de déploiement sur le serveur      | `/home/ohsconst/public_html`     |
-
-**⚠️ Sécurité:** Ne partagez jamais `SSH_PRIVATE_KEY` publiquement.
-
----
-
-## 6. GitHub Actions Workflow
-
-### Créer le fichier de workflow
-
-Créez le fichier: `.github/workflows/deploy.yml`
+The file `.github/workflows/deploy.yml` utilizes `SamKirkland/FTP-Deploy-Action`. This action is an industry standard for synchronizing files via FTP/FTPS.
 
 ```yaml
-name: Deploy OHS Construction to cPanel
+name: Deploy OHS Construction via FTP
 
 on:
   push:
     branches: ["main"]
-  workflow_dispatch:  # Permet le déclenchement manuel
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy to Production
     runs-on: ubuntu-latest
-    
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: 🔧 Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: 🚀 Deploy files to cPanel
-        run: |
-          rsync -avz --delete \
-            -e "ssh -p ${{ secrets.SSH_PORT }}" \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='CI-CD.md' \
-            --exclude='README.md' \
-            --exclude='*.txt' \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
-
-      - name: ✅ Deployment successful
-        run: echo "🎉 Site deployed successfully to ${{ secrets.SSH_HOST }}"
+      
+      - name: Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.github*/**
+            **/node_modules/**
+            CI-CD.md
+            README.md
+            NEXT-STEPS.md
+            .gitignore
 ```
-
-### Explications des options rsync
-
-- `-a` : Mode archive (préserve permissions, timestamps)
-- `-v` : Verbose (affiche les fichiers transférés)
-- `-z` : Compression pendant le transfert
-- `--delete` : Supprime les fichiers sur le serveur qui n'existent plus localement
-- `--exclude` : Exclut certains fichiers/dossiers du déploiement
 
 ---
 
-## 7. Deployment Steps (Operational Flow)
+## 6. Deployment Operations
 
-### Workflow Quotidien
+### Routine Workflow
 
-1. **Modifier les fichiers du site localement**
-   ```bash
-   # Exemple: éditer index.html
-   code index.html
-   ```
-
-2. **Tester localement**
-   ```bash
-   python3 -m http.server 8080
-   # Ouvrir http://localhost:8080
-   ```
-
-3. **Commiter les changements**
+1. **Modify files locally**
+2. **Test locally** (`python3 -m http.server 8080`)
+3. **Commit changes**
    ```bash
    git add .
-   git commit -m "feat: ajout section services avec images"
+   git commit -m "feat: content update"
    ```
-
-4. **Pousser vers GitHub**
+4. **Push to GitHub**
    ```bash
    git push origin main
    ```
+5. **Verify deployment** in the "Actions" tab on GitHub
 
-5. **Vérifier le déploiement**
-   - Allez dans `Actions` sur GitHub
-   - Vérifiez que le workflow s'exécute
-   - Attendez le ✅ vert
+### Manual Deployment
 
-6. **Vérifier le site en production**
-   ```
-   https://ohs-construction.com
-   ```
-
-### Déploiement Manuel (via GitHub)
-
-Si vous voulez déclencher un déploiement sans push:
-
-1. Allez dans `Actions` sur GitHub
-2. Sélectionnez `Deploy OHS Construction to cPanel`
-3. Cliquez sur `Run workflow`
-4. Sélectionnez la branche `main`
-5. Cliquez sur `Run workflow`
+1. Go to the **Actions** tab
+2. Select the workflow **Deploy OHS Construction via FTP**
+3. Click **Run workflow**
 
 ---
 
-## 8. Result
+## 7. Troubleshooting
 
-### ✅ Avantages du Pipeline
+### Error: "Timeout" or "Connection refused"
 
-- ✅ **Déploiement automatique** - Chaque push sur `main` déploie automatiquement
-- ✅ **Pas de FTP manuel** - Fini les uploads manuels fastidieux
-- ✅ **Traçabilité complète** - Historique de tous les déploiements
-- ✅ **Rollback facile** - Revenez à une version précédente via Git
-- ✅ **Validation avant déploiement** - Possibilité d'ajouter des tests
-- ✅ **Déploiement rapide** - rsync ne transfère que les fichiers modifiés
+- Verify `FTP_SERVER` address is correct.
+- Ensure the server firewall allows connections from GitHub IPs (usually allowed for standard shared hosting).
 
-### 📊 Temps de Déploiement
+### Error: "Login failed"
 
-- **Premier déploiement:** ~2-3 minutes (tous les fichiers)
-- **Déploiements suivants:** ~30-60 secondes (fichiers modifiés uniquement)
+- Check `FTP_USERNAME` and `FTP_PASSWORD`.
+- Note: FTP usernames often require the full structure `user@domain.com`.
 
----
+### Files not updating
 
-## 9. Troubleshooting
-
-### ❌ Erreur: "Permission denied (publickey)"
-
-**Cause:** La clé SSH n'est pas correctement configurée.
-
-**Solution:**
-```bash
-# Vérifier que la clé publique est dans authorized_keys sur le serveur
-ssh USERNAME@HOST "cat ~/.ssh/authorized_keys"
-
-# Vérifier les permissions
-ssh USERNAME@HOST "chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
-```
-
-### ❌ Erreur: "Host key verification failed"
-
-**Cause:** Le serveur n'est pas dans known_hosts.
-
-**Solution:** Le workflow inclut déjà `ssh-keyscan`. Si le problème persiste:
-```bash
-# Localement, ajoutez manuellement le host
-ssh-keyscan -H votre-domaine.com >> ~/.ssh/known_hosts
-```
-
-### ❌ Erreur: "rsync: failed to connect"
-
-**Cause:** Port SSH incorrect ou serveur inaccessible.
-
-**Solution:**
-1. Vérifiez le port SSH dans les secrets GitHub
-2. Testez la connexion manuellement:
-   ```bash
-   ssh -p PORT USERNAME@HOST
-   ```
-
-### ❌ Le workflow ne se déclenche pas
-
-**Cause:** Branche incorrecte ou workflow désactivé.
-
-**Solution:**
-1. Vérifiez que vous pushez sur `main`
-2. Allez dans `Actions` → Vérifiez que le workflow est activé
-
-### 🔍 Logs de Débogage
-
-Pour voir les logs détaillés:
-1. Allez dans `Actions` sur GitHub
-2. Cliquez sur le workflow en cours/échoué
-3. Cliquez sur `deploy` job
-4. Consultez chaque étape
+- Browser cache may be holding old versions. Test in Incognito/Private mode.
+- Verify `server-dir` points to `/public_html/` correctly.
 
 ---
 
-## 10. Notes
+## License
 
-### 📌 Points Importants
-
-- **Type de pipeline:** Push-based CI/CD (déploiement à chaque push)
-- **Protocole:** SSH + rsync (fiable et éprouvé en production)
-- **Sécurité:** Clés SSH dédiées, secrets GitHub chiffrés
-- **Compatibilité:** Fonctionne avec tous les hébergeurs cPanel avec SSH
-
-### 🚀 Améliorations Futures (Optionnel)
-
-Vous pouvez améliorer le pipeline avec:
-
-1. **Tests automatisés:**
-   ```yaml
-   - name: Validate HTML
-     run: |
-       npm install -g html-validator-cli
-       html-validator --file=index.html
-   ```
-
-2. **Optimisation d'images:**
-   ```yaml
-   - name: Optimize images
-     run: |
-       npm install -g imagemin-cli
-       imagemin assets/images/* --out-dir=assets/images/
-   ```
-
-3. **Notifications Slack/Discord:**
-   ```yaml
-   - name: Notify deployment
-     uses: 8398a7/action-slack@v3
-     with:
-       status: ${{ job.status }}
-       webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-   ```
-
-4. **Déploiement par environnement:**
-   - `main` → Production
-   - `staging` → Environnement de test
-
-### 📚 Ressources
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [rsync Manual](https://linux.die.net/man/1/rsync)
-- [cPanel SSH Access Guide](https://docs.cpanel.net/knowledge-base/ssh/how-to-use-ssh/)
-
----
-
-## 📝 License
-
-MIT - Documentation CI/CD pour OHS CONSTRUCTION
-
----
-
-**Dernière mise à jour:** Décembre 2025  
-**Maintenu par:** Équipe DevOps OHS Construction
+Internal Documentation - OHS CONSTRUCTION

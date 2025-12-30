@@ -1,6 +1,6 @@
 # OHS CONSTRUCTION - Official Website
 
-Modern corporate website for **OHS CONSTRUCTION**, an Algerian company specializing in public works, hydraulics, buildings, and railway infrastructures.
+Corporate website for **OHS CONSTRUCTION**, an Algerian company specializing in public works, hydraulics, buildings, and railway infrastructure.
 
 ---
 
@@ -9,9 +9,9 @@ Modern corporate website for **OHS CONSTRUCTION**, an Algerian company specializ
 - [Overview](#overview)
 - [Features](#features)
 - [Project Structure](#project-structure)
-- [Technologies Used](#technologies-used)
+- [Technologies](#technologies)
 - [Installation & Development](#installation--development)
-- [Site Pages](#site-pages)
+- [Pages](#pages)
 - [Deployment](#deployment)
 - [Contribution](#contribution)
 
@@ -19,22 +19,22 @@ Modern corporate website for **OHS CONSTRUCTION**, an Algerian company specializ
 
 ## Overview
 
-Professional website showcasing the services, projects, and expertise of OHS CONSTRUCTION. The site highlights over 15 years of experience in the BTPH sector in Algeria.
+Professional website presenting the services, projects, and expertise of OHS CONSTRUCTION. The site highlights over 15 years of experience in the BTPH sector in Algeria.
 
-**Production URL:** `https://ohs-construction.com` *(to be configured)*
+**Production URL:** `https://ohs-construction.com`
 
 ---
 
 ## Features
 
-- **Modern and Responsive Design** - Compatible with mobile, tablet, and desktop
-- **Animated Hero Section** - Image carousel with smooth transitions
-- **Services Section with Images** - 4 main services with hover effects
-- **Projects Gallery** - Complete portfolio of realized projects
-- **Contact Form** - Functional email integration
-- **SEO Optimized** - Meta tags, semantic HTML5 structure
-- **Optimized Performance** - Fast loading, optimized images
-- **Multilingual Ready** - Structure prepared (currently in French)
+- **Modern and Responsive Design**: Compatible with mobile, tablet, and desktop
+- **Animated Hero Section**: Image carousel with smooth transitions
+- **Services Section**: 4 main services with hover effects
+- **Project Gallery**: Portfolio of completed works
+- **Contact Form**: Functional email integration
+- **SEO Optimized**: Meta tags, semantic HTML5 structure
+- **Optimized Performance**: Fast loading, optimized images
+- **Multilingual Structure**: Prepared structure (currently in French)
 
 ---
 
@@ -47,9 +47,9 @@ site web/
 │       └── deploy.yml          # GitHub Actions CI/CD
 ├── assets/
 │   ├── css/
-│   │   └── style.css           # Main styles
+│   │   └── style.css           # Main Styles
 │   ├── js/
-│   │   └── main.js             # JavaScript scripts
+│   │   └── main.js             # JavaScript
 │   └── images/
 │       ├── logo.jpg
 │       ├── penetrante_tizi/    # Road project images
@@ -57,36 +57,36 @@ site web/
 │       ├── entretien_dellys/   # Hydraulic project images
 │       ├── hotel_africana/     # Building project images
 │       └── ...                 # Other projects
-├── index.html                  # Home page
-├── apropos.html                # About page
-├── services.html               # Detailed services
-├── projets.html                # Project portfolio
-├── contact.html                # Contact page
+├── index.html                  # Homepage
+├── apropos.html                # About Us
+├── services.html               # Services
+├── projets.html                # Projects Portfolio
+├── contact.html                # Contact
 ├── README.md                   # This file
-└── CI-CD.md                    # Deployment documentation
+└── CI-CD.md                    # Deployment Documentation
 ```
 
 ---
 
-## Technologies Used
+## Technologies
 
 ### Frontend
-- **HTML5** - Semantic structure
-- **CSS3** - Modern styling with CSS variables
-- **Vanilla JavaScript** - Interactivity (carousel, mobile navigation)
+- **HTML5**: Semantic structure
+- **CSS3**: Modern styling with CSS variables
+- **Vanilla JavaScript**: Interactivity (carousel, mobile navigation)
 
 ### Fonts & Icons
-- **Google Fonts** - Inter (headings), Roboto (text)
-- **Font Awesome 6.4** - Icons
+- **Google Fonts**: Inter (headings), Roboto (body text)
+- **Font Awesome 6.4**: Icons
 
 ### Development Tools
-- **Git** - Version control
-- **GitHub Actions** - Automated CI/CD
-- **Python HTTP Server** - Local development server
+- **Git**: Version control
+- **GitHub Actions**: Automated CI/CD
+- **Python HTTP Server**: Local development server
 
 ### Hosting
-- **cPanel** - Production hosting
-- **SSH/rsync** - Automated deployment
+- **cPanel**: Production hosting
+- **FTP**: Automated deployment
 
 ---
 
@@ -105,9 +105,9 @@ site web/
    cd ohs-construction
    ```
 
-2. **Start the development server**
+2. **Start development server**
    
-   Option 1 - Python (recommended):
+   Option 1 - Python (Recommended):
    ```bash
    python3 -m http.server 8080
    ```
@@ -129,7 +129,7 @@ site web/
 
 ### Development
 
-#### Modifying Styles
+#### modifying Styles
 Edit `assets/css/style.css`. CSS variables are defined in `:root`:
 ```css
 :root {
@@ -145,77 +145,38 @@ Place images in `assets/images/` and reference them:
 <img src="assets/images/your-image.jpg" alt="Description">
 ```
 
-#### Testing Responsiveness
-Use browser DevTools (F12) to test:
-- Mobile: 375px, 414px
-- Tablet: 768px, 1024px
-- Desktop: 1280px, 1920px
-
 ---
 
-## Site Pages
+## Pages
 
 | Page | File | Description |
-|------|------|-------------|
-| **Home** | `index.html` | Hero, services, stats, presentation |
+|------|---------|-------------|
+| **Home** | `index.html` | Hero, services, stats, overview |
 | **About** | `apropos.html` | History, values, team |
-| **Services** | `services.html` | Details of 4 main services |
-| **Projects** | `projets.html` | Project portfolio |
+| **Services** | `services.html` | Details of the 4 main services |
+| **Projects** | `projets.html` | Portfolio |
 | **Contact** | `contact.html` | Form, contact info, map |
-
-### Services Featured
-
-1. **Public Works & Roads** - Roads, highways, earthworks
-2. **Railway Infrastructures** - Stations, tracks, electrification
-3. **Hydraulic & Port** - Water supply, sanitation, ports
-4. **Building & Development** - Construction, utilities, improvements
 
 ---
 
 ## Deployment
 
-### Automatic Deployment (Production)
+### Automated Deployment (Production)
 
-The site uses **GitHub Actions** for automatic deployment to cPanel.
+The site uses **GitHub Actions** for automated deployment to cPanel via FTP.
 
-**See full documentation:** [`CI-CD.md`](./CI-CD.md)
+**See complete documentation:** [`CI-CD.md`](./CI-CD.md)
 
 **Workflow:**
 ```
-git push origin main → GitHub Actions → cPanel (SSH/rsync)
+git push origin main → GitHub Actions → cPanel (FTP)
 ```
 
-### Manual Deployment (FTP)
+### Manual Deployment
 
-If you prefer manual deployment:
-
-1. Connect to your cPanel via FTP
+1. Connect to cPanel via FTP
 2. Upload all files to `/public_html/`
-3. Check permissions (644 for files, 755 for folders)
-
----
-
-## Customization
-
-### Changing Colors
-
-Modify CSS variables in `assets/css/style.css`:
-```css
-:root {
-    --primary-color: #YOUR_COLOR;
-    --secondary-color: #YOUR_COLOR;
-}
-```
-
-### Modifying the Logo
-
-Replace `assets/images/logo.jpg` with your logo (recommended format: transparent PNG, 200x80px)
-
-### Adding a Project
-
-1. Create a folder in `assets/images/project_name/`
-2. Add your images
-3. Edit `projets.html` to add the project
+3. Verify permissions (644 for files, 755 for directories)
 
 ---
 
@@ -228,7 +189,7 @@ Replace `assets/images/logo.jpg` with your logo (recommended format: transparent
    git checkout -b feature/feature-name
    ```
 
-2. Make your changes and commit:
+2. Make changes and commit:
    ```bash
    git add .
    git commit -m "Description of changes"
@@ -241,21 +202,14 @@ Replace `assets/images/logo.jpg` with your logo (recommended format: transparent
 
 4. Create a Pull Request on GitHub
 
-### Code Standards
-
-- **HTML:** 4-space indentation, lowercase tags
-- **CSS:** Organized by section, clear comments
-- **JavaScript:** ES6+, JSDoc comments
-- **Commits:** Descriptive messages
-
 ---
 
 ## Contact & Support
 
 **OHS CONSTRUCTION**
 - Tizi Ouzou, Algeria
-- contact@ohs-construction.com
-- [ohs-construction.com](https://ohs-construction.com)
+- Email: contact@ohs-construction.com
+- Web: [ohs-construction.com](https://ohs-construction.com)
 
 **Web Development**
 - Issues: [GitHub Issues](https://github.com/your-username/ohs-construction/issues)
@@ -267,21 +221,4 @@ Replace `assets/images/logo.jpg` with your logo (recommended format: transparent
 
 © 2025 OHS CONSTRUCTION. All rights reserved.
 
-This website is the property of OHS CONSTRUCTION. The source code is available under the MIT license for reference and learning.
-
----
-
-## Changelog
-
-### Version 1.0.0 (December 2025)
-- Initial site launch
-- 5 complete pages (Home, About, Services, Projects, Contact)
-- Services section with images and hover effects
-- Hero section with animated carousel
-- Fully responsive design
-- CI/CD with GitHub Actions
-- cPanel integration
-
----
-
-**Developed for OHS CONSTRUCTION**
+The source code is available under the MIT license for reference and learning purposes.

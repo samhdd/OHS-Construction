@@ -1,36 +1,34 @@
-name: Deploy OHS Construction to cPanel
+name: Deploy OHS Construction via FTP
 
 on:
   push:
     branches: ["main"]
-  workflow_dispatch:  # Permet le déclenchement manuel
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy to Production
     runs-on: ubuntu-latest
-    
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🔧 Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: 🚀 Deploy files to cPanel
-        run: |
-          rsync -avz --delete \
-            -e "ssh -p ${{ secrets.SSH_PORT }}" \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='CI-CD.md' \
-            --exclude='README.md' \
-            --exclude='*.txt' \
-            --exclude='projet *' \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
-
-      - name: ✅ Deployment successful
-        run: echo "🎉 Site deployed successfully to ${{ secrets.SSH_HOST }}"
+      - name: Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github*/**
+            **/node_modules/**
+            **/*.txt
+            **/projet*/**
+            CI-CD.md
+            README.md
+            NEXT-STEPS.md
+            SSH-TROUBLESHOOTING.md
+            .gitignore

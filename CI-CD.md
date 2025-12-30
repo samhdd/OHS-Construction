@@ -161,6 +161,15 @@ jobs:
 - Check `FTP_USERNAME` and `FTP_PASSWORD`.
 - Note: FTP usernames often require the full structure `user@domain.com`.
 
+### Error: "552 Disk full" or "Quota exceeded"
+
+- **Cause**: The hosting account has reached its disk space limit.
+- **Solution**:
+  1. Log in to cPanel.
+  2. Check "Disk Usage" in the Files section.
+  3. Delete unnecessary files (e.g., `error_log` files in `public_html`, old backups, or contents of `.trash`).
+  4. Empty the specific email trash folders if email is sharing the quota.
+
 ### Files not updating
 
 - Browser cache may be holding old versions. Test in Incognito/Private mode.

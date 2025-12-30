@@ -553,8 +553,35 @@ footer {
         display: block;
     }
 
+    .hero {
+        padding-left: 20px;
+        padding-right: 20px;
+        height: auto;
+        min-height: 500px;
+        /* Reduced min-height for mobile */
+    }
+
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        /* Reduced from 2.5rem */
+        line-height: 1.2;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 30px;
+    }
+
+    .hero-company-name {
+        font-size: 1.8rem;
+        /* Reduced for mobile */
+        letter-spacing: 1px;
+    }
+
+    .hero-logo-placeholder {
+        max-width: 100px;
+        /* Smaller logo for mobile */
     }
 
     .stats-grid {
@@ -567,7 +594,7 @@ footer {
     }
 
     .featured-service-card {
-        height: 280px;
+        height: 200px;
     }
 
     .featured-service-content h3 {

@@ -601,3 +601,102 @@ footer {
         font-size: 1.1rem;
     }
 }
+
+/* Dropdown Menu Styles */
+.dropdown-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: 900px;
+    /* Wide dropdown */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 10px 10px;
+    border-top: 3px solid var(--secondary-color);
+    padding: 20px;
+    z-index: 1100;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    /* Gap for hover intent, handled by pseudo-element usually or just modifying logic */
+}
+
+/* Connect the dropdown so it doesn't disappear when moving cursor */
+.dropdown-container::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    /* Bridge the gap */
+    background: transparent;
+}
+
+.dropdown-container:hover .dropdown-content {
+    display: grid;
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0;
+}
+
+.dropdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.dropdown-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.dropdown-item span {
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+/* Responsive adjustment for dropdown */
+@media (max-width: 992px) {
+    .dropdown-content {
+        display: none !important;
+        /* Hide on mobile/tablet for now or use different style */
+    }
+
+    /* On mobile, we might just want regular links, so we hide the dropdown mechanism */
+    .dropdown-container:hover .dropdown-content {
+        display: none;
+    }
+}

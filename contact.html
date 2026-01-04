@@ -24,13 +24,49 @@
         <div class="container">
             <nav class="navbar">
                 <a href="index.html" class="logo">
-                    <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/logo_polished.png" alt="OHS CONSTRUCTION"> OHS CONSTRUCTION
+                    <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/logo_polished.png"
+                        alt="OHS CONSTRUCTION"> OHS CONSTRUCTION
                 </a>
                 <ul class="nav-links">
                     <li><a href="index.html">Accueil</a></li>
                     <li><a href="apropos.html">À Propos</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="projets.html">Projets</a></li>
+                    <li class="dropdown-container">
+                        <a href="projets.html">Projets <i class="fa-solid fa-chevron-down"
+                                style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                        <div class="dropdown-content">
+                            <a href="projets.html#chlef" class="dropdown-item">
+                                <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/penetrante_chlef/IMG_20151208_145957.jpg"
+                                    alt="Pénétrante Chlef">
+                                <span>Pénétrante Chlef</span>
+                            </a>
+                            <a href="projets.html#tizi" class="dropdown-item">
+                                <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/penetrante_tizi/IMG-20250730-WA0006.jpg"
+                                    alt="Pénétrante Tizi Ouzou">
+                                <span>Pénétrante Tizi Ouzou</span>
+                            </a>
+                            <a href="projets.html#thenia" class="dropdown-item">
+                                <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/ferroviaire_thenia/DSC04471.JPG"
+                                    alt="Voie Ferroviaire">
+                                <span>Voie Ferroviaire</span>
+                            </a>
+                            <a href="projets.html#dellys" class="dropdown-item">
+                                <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/entretien_dellys/20250130_075500.jpg"
+                                    alt="Port Dellys">
+                                <span>Port Dellys</span>
+                            </a>
+                            <a href="projets.html#capdjinet" class="dropdown-item">
+                                <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/entretien_cap_djinet/IMG-20250824-WA0000.jpg"
+                                    alt="Cap Djinet">
+                                <span>Cap Djinet</span>
+                            </a>
+                            <a href="projets.html#africana" class="dropdown-item">
+                                <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/hotel_africana/LostFile_JPG_37036184.jpg"
+                                    alt="Hôtel Africana">
+                                <span>Hôtel Africana</span>
+                            </a>
+                        </div>
+                    </li>
                     <li><a href="contact.html" class="active">Contact</a></li>
                 </ul>
                 <div class="mobile-toggle">
@@ -123,14 +159,15 @@
         </div>
     </section>
 
-    <!-- Google Map -->
-    <div style="height: 400px; width: 100%;">
+
+
+    <!-- Map Section -->
+    <section class="map-section">
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102286.3813723321!2d4.0065099!3d36.7134882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128dc879024f2229%3A0x6335193910363293!2sTizi%20Ouzou!5e0!3m2!1sfr!2sdz!4v1701900000000!5m2!1sfr!2sdz"
-            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3198.4914521852506!2d4.0446801!3d36.710756599999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128dc992a19864ef%3A0xea6ecdfacaeb0283!2sOHS%20Construction!5e0!3m2!1sen!2sdz!4v1767517861424!5m2!1sen!2sdz"
+            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
 
     <!-- Footer -->
     <footer>
@@ -138,7 +175,8 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="logo" style="margin-bottom: 20px; color: white;">
-                        <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/logo_polished.png" alt="OHS CONSTRUCTION"> OHS CONSTRUCTION
+                        <img src="https://cdn.jsdelivr.net/gh/samhdd/OHS-Construction@main/assets/images/logo_polished.png"
+                            alt="OHS CONSTRUCTION"> OHS CONSTRUCTION
                     </div>
                     <p style="opacity: 0.7; margin-bottom: 20px;">Entreprise leader dans le secteur du BTPH en Algérie,
                         engagée pour la qualité et la durabilité.</p>
@@ -157,12 +195,14 @@
                 <div class="footer-col">
                     <h4>Contact</h4>
                     <ul class="footer-links">
-                        <li><i class="fa-solid fa-location-dot" style="width: 25px; color: var(--secondary-color);"></i>
-                            Tizi Ouzou, Algérie</li>
+                        <li><a href="https://share.google/eCxFYtbRIzuD2Xg0z" target="_blank"><i
+                                    class="fa-solid fa-location-dot"
+                                    style="width: 25px; color: var(--secondary-color);"></i>
+                                Tizi Ouzou, Algérie</a></li>
                         <li><i class="fa-solid fa-envelope" style="width: 25px; color: var(--secondary-color);"></i>
                             contact@ohs-construction.com</li>
-                        <li><i class="fa-solid fa-phone" style="width: 25px; color: var(--secondary-color);"></i> +213
-                            -- -- -- --</li>
+                        <li><a href="tel:0780351041"><i class="fa-solid fa-phone"
+                                    style="width: 25px; color: var(--secondary-color);"></i> 0780 35 10 41</a></li>
                     </ul>
                 </div>
             </div>

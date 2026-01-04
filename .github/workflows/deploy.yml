@@ -27,7 +27,6 @@ jobs:
             **/node_modules/**
             **/*.txt
             **/projet*/**
-            assets/images/**
             CI-CD.md
             README.md
             NEXT-STEPS.md

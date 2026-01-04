@@ -77,11 +77,13 @@ ohs-construction/
 
 The following secrets must be configured in `Repository -> Settings -> Secrets and variables -> Actions`:
 
-| Secret Name | Description | Example |
+| Secret Name | Description | Value (Confirmed) |
 |-------------|-------------|---------|
 | `FTP_SERVER` | FTP Server Address | `ftp.ohs-construction.com` |
-| `FTP_USERNAME` | FTP Username | `user@ohs-construction.com` |
+| `FTP_USERNAME` | FTP Username | `ohsconst` |
 | `FTP_PASSWORD` | FTP Password | `******` |
+
+**Note**: The deployment uses Port **21** (Explicit FTPS). Ensure your `FTP_USERNAME` is exactly `ohsconst` (not an email address) as confirmed by your hosting details.
 
 ---
 

@@ -704,3 +704,14 @@ footer {
         display: none;
     }
 }
+
+@media (max-width: 768px) {
+    .dropdown-container {
+        display: block;
+        text-align: center;
+    }
+
+    .dropdown-container>a {
+        display: inline-block;
+    }
+}

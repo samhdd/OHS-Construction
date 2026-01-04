@@ -695,6 +695,10 @@ footer {
         /* Hide on mobile/tablet for now or use different style */
     }
 
+    .dropdown-container .fa-chevron-down {
+        display: none !important;
+    }
+
     /* On mobile, we might just want regular links, so we hide the dropdown mechanism */
     .dropdown-container:hover .dropdown-content {
         display: none;
